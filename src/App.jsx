@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { SeoHead } from './components/SeoHead';
+import { SeoContentSection } from './components/SeoContentSection';
 
 // 100% Accurate Translation Matrix (International Standard Validation Layout)
 const l = {
@@ -255,6 +257,7 @@ function App() {
 
   return (
     <div style={{ boxSizing: 'border-box', backgroundColor: '#f8fafc', color: '#0f172a', minHeight: '100vh', margin: 0, padding: 0, fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+      <SeoHead lang={lang} />
 
       {/* 1. HEADER */}
       <header style={{ boxSizing: 'border-box', backgroundColor: '#0f172a', color: '#ffffff', padding: '15px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, zIndex: 1000, width: '100%', flexWrap: 'wrap', gap: '15px' }}>
@@ -527,6 +530,8 @@ function App() {
           </div>
         </div>
       </section>
+
+      <SeoContentSection lang={lang} onApply={scrollToForm} />
 
       {/* 7. FOOTER */}
       <footer id="footer" style={{ boxSizing: 'border-box', backgroundColor: '#0f172a', color: '#94a3b8', padding: '60px 40px', fontSize: '13.5px', borderTop: '2px solid #1e293b', width: '100%' }}>
