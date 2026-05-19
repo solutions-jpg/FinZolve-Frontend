@@ -1,18 +1,38 @@
-# React + Vite
+# FinZolve Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Smart Loans. Simplified. — Marketing site with EN / Tamil / Hindi support.
 
-Currently, two official plugins are available:
+## Local development
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+npm run dev
+```
 
-## React Compiler
+Open the URL shown in the terminal (usually `http://localhost:5173`).
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+## Production build
 
-Note: This will impact Vite dev & build performances.
+```bash
+npm run build
+npm run preview
+```
 
-## Expanding the ESLint configuration
+## Live site (GitHub Pages)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+After pushing to `main`, enable Pages once:
+
+1. Open **https://github.com/solutions-jpg/FinZolve-Frontend/settings/pages**
+2. Under **Build and deployment** → **Source**, choose **GitHub Actions**
+3. Wait for the **Deploy to GitHub Pages** workflow to finish (Actions tab)
+
+Site URL: **https://solutions-jpg.github.io/FinZolve-Frontend/**
+
+## Git identity (this repo only)
+
+```bash
+git config user.name "solutions-jpg"
+git config user.email "solutions@finzolve.com"
+```
+
+Use **support865** only in RidePro repos — not here.
