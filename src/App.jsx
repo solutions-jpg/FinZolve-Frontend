@@ -15,7 +15,7 @@ const l = {
     submitText: "Verify & Submit via WhatsApp", whyTitle: "Why Choose FinZolve?", whySub: "Enterprise-grade distribution built for Indian borrowers",
     partnerText: "150+ Bank Partners", secureText: "100% Secure Processing", langText: "Multi-language Help", doorText: "Doorstep Executive Assistance",
     partnerDesc: "One-stop access to major banks and premium NBFCs across India.", secureDesc: "Bank-grade 256-bit data encryption ensuring absolute data privacy.", langDesc: "Designed beautifully for Indian users to apply in their comfort language.", doorDesc: "Fast verification and transparent process from application to disbursal.",
-    footerText: "FinZolve strictly operates as a digital data router. Strategically deployed for rapidly scaling Pan-India operations. All operations are strictly governed by federal laws of India. Legal actions are strictly confined to the exclusive jurisdiction of competent registered headquarters courts.",
+    footerText: "FinZolve operates as a digital loan distribution platform serving Tamil Nadu, with planned expansion across India. Governed by applicable laws of India; disputes subject to courts at our registered headquarters in Tamil Nadu.",
     close: "Close", qrText: "Scan to Apply on Mobile",
     subWindowLabel: "Official Briefing & Overview for", formSelectHeader: "Select Loan Asset Class & Allocation Purpose",
     productOverviewHeader: "Product Structural Summary:", subCatHeader: "Available Custom Purposes / Sub-Categories:",
@@ -47,7 +47,7 @@ const l = {
     submitText: "Verify & Submit via WhatsApp", whyTitle: "ஏன் FinZolve-ஐத் தேர்ந்தெடுக்க வேண்டும்?", whySub: "இந்திய கடன் வாங்குபவர்களுக்காக உருவாக்கப்பட்ட எண்டர்பிரைஸ் விநியோக கட்டமைப்பு",
     partnerText: "150+ வங்கி கூட்டாளர்கள்", secureText: "100% பாதுகாப்பான செயலாக்கம்", langText: "பல்மொழி உதவி", doorText: "நேரடி வீட்டுச் சேவை உதவி",
     partnerDesc: "இந்தியா முழுவதும் உள்ள முக்கிய வங்கிகள் மற்றும் NBFC-களை ஒரே இடத்தில் அணுகலாம்.", secureDesc: "உங்கள் தரவு தனியுரிமையை உறுதி செய்யும் வங்கி அளவிலான 256-பிட் குறியாக்கம்.", langDesc: "இந்திய பயனர்கள் தங்களுக்கு வசதியான மொழியில் விண்ணப்பிக்கும் வகையில் வடிவமைக்கப்பட்டுள்ளது.", doorDesc: "லோன் அப்ளிகேஷன் முதல் பணம் விநியோகம் வரை வேகமான சரிபார்ப்பு மற்றும் வெளிப்படையான செயல்முறை.",
-    footerText: "FinZolve ஒரு டிஜிட்டல் தரவு பரிமாற்ற தளமாக மட்டுமே செயல்படுகிறது. இந்தியா முழுவதுமான பிசினஸ் விரிவாக்கத்திற்காக (Pan-India Operations) இந்த தளம் கட்டமைக்கப்பட்டுள்ளது. அனைத்து செயல்பாடுகளும் இந்திய சட்டங்களுக்கு உட்பட்டவை. சட்டரீதியான விவாதங்கள் அனைத்தும் எங்களது தலைமைப் பதிவு அலுவலக நீதிமன்ற எல்லைக்கு மட்டுமே உட்பட்டவை.",
+    footerText: "FinZolve தமிழ்நாடு முழுவதும் சேவை செய்யும் டிஜிட்டல் கடன் விநியோக தளம்; இந்தியா முழுவதும் விரிவாக்கம் திட்டமிடப்பட்டுள்ளது. இந்திய சட்டங்களுக்கு உட்பட்டது; விவாதங்கள் தமிழ்நாடு தலைமைப் பதிவு நீதிமன்ற எல்லைக்கு உட்பட்டவை.",
     close: "மூடு", qrText: "மொபைலில் விண்ணப்பிக்க ஸ்கேன் செய்யவும்",
     subWindowLabel: "அதிகாரப்பூர்வ லோன் விளக்கம் மற்றும் கட்டமைப்பு:", formSelectHeader: "லோன் வகை மற்றும் ஒதுக்கீட்டு நோக்கத்தைத் தேர்ந்தெடுக்கவும்",
     productOverviewHeader: "தயாரிப்பு விளக்கச் சுருக்கம்:", subCatHeader: "கிடைக்கக்கூடிய லோன் உள்-பிரிவுகள் (நோக்கங்கள்):",
@@ -77,7 +77,7 @@ const l = {
     submitText: "Verify & Submit via WhatsApp", whyTitle: "FinZolve क्यों चुनें?", whySub: "भारतीय उधारकर्ताओं के लिए निर्मित एंटरप्राइज-ग्रेड वितरण नेटवर्क",
     partnerText: "150+ Bank भागीदार", secureText: "100% सुरक्षित प्रसंस्करण", langText: "बहुभाषी सहायता", doorText: "घर पर कार्यकारी सहायता",
     partnerDesc: "भारत भर के प्रमुख बैंकों और प्रीमियम एनबीएफसी तक वन-स्टॉप पहुंच।", secureDesc: "पूर्ण डेटा गोपनीयता सुनिश्चित करने वाला बैंक-ग्रेड 256-बिट डेटा एन्क्रिप्शन।", langDesc: "भारतीय उपयोगकर्ताओं के लिए उनकी आरामदायक भाषा में आवेदन करने के लिए खूबसूरती से डिज़ाइन किया गया।", doorDesc: "आवेदन से लेकर वितरण तक तेजी से सत्यापन और पारदर्शी प्रक्रिया।",
-    footerText: "FinZolve पूरी तरह से एक digital डेटा राउटर के रूप में कार्य करता है। यह प्लेटफ़ॉर्म हमारे अखिल भारतीय विस्तार के लिए बनाया गया है। सभी कानूनी विवाद विशेष रूप से हमारे मुख्यालय के न्यायालय के अधिकार क्षेत्र के अधीन होंगे।",
+    footerText: "FinZolve तमिलनाडु में सेवा करने वाला डिजिटल लोन वितरण मंच; भारत भर में विस्तार की योजना। भारतीय कानूनों के अधीन; विवाद तमिलनाडु मुख्यालय की अदालतों के अधीन।",
     close: "बंद करें", qrText: "मोबाइल पर आवेदन करने के लिए स्कैन करें",
     subWindowLabel: "इसके लिए उपलब्ध विवरण और उप-श्रेणियां:", formSelectHeader: "लोन एसेट क्लास और आवंटन उद्देश्य का चयन करें",
     productOverviewHeader: "उत्पाद संरचनात्मक सारांश:", subCatHeader: "उपलब्ध लोन उप-श्रेणियां (उद्देश्य):",
@@ -531,7 +531,7 @@ function App() {
         </div>
       </section>
 
-      <SeoContentSection lang={lang} onApply={scrollToForm} />
+      <SeoContentSection lang={lang} />
 
       {/* 7. FOOTER */}
       <footer id="footer" style={{ boxSizing: 'border-box', backgroundColor: '#0f172a', color: '#94a3b8', padding: '60px 40px', fontSize: '13.5px', borderTop: '2px solid #1e293b', width: '100%' }}>

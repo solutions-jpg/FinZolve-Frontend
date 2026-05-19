@@ -14,7 +14,7 @@ const legalEn: Record<LegalDocType, LegalDocument> = {
     lastUpdated: 'Last updated: May 2026',
     body: [
       'FinZolve strictly operates as a digital data router. By inputting your Mobile Number, PAN metrics, and financial markers, you provide unconditional, irrevocable consent to FinZolve to capture, archive, process, and transmit your data to our network of registered banks and NBFC lending partners.',
-      'FinZolve currently serves applicants primarily across Southern India (including Tamil Nadu — Coimbatore, Trichy, Namakkal and surrounding districts), with a planned phased PAN-India digital expansion. Partner coverage in your pincode may vary during rollout.',
+      'FinZolve currently serves applicants across Tamil Nadu, with a planned phased expansion to additional regions in India. Partner coverage in your pincode may vary during rollout.',
       'While we utilize secure industry-standard 256-bit encryption channels, the user explicitly acknowledges that no digital transmission is 100% immune to breaches. FinZolve stands completely indemnified against any unauthorized third-party hacks, data leaks, or processing errors beyond our direct structural infrastructure.',
       'You may request data correction by writing to support@finzolve.in. We retain application data only as long as required for partner matching and regulatory compliance under applicable Indian law.',
     ],
@@ -45,7 +45,7 @@ const legalTa: Record<LegalDocType, LegalDocument> = {
     lastUpdated: 'கடைசியாக புதுப்பிக்கப்பட்டது: மே 2026',
     body: [
       'FinZolve ஒரு டிஜிட்டல் தரவு பரிமாற்ற தளமாக மட்டுமே செயல்படுகிறது. உங்கள் விவரங்களை உள்ளிடுவதன் மூலம், பதிவுசெய்யப்பட்ட வங்கி மற்றும் NBFC கூட்டாளர்களுக்கு உங்கள் தரவைச் சேகரித்து அனுப்ப FinZolve-க்கு நிபந்தனையற்ற அங்கீகாரத்தை வழங்குகிறீர்கள்.',
-      'தற்போது FinZolve தென்னிந்தியாவில் (தமிழ்நாடு — கோயம்புத்தூர், திருச்சி, நாமக்கல் மற்றும் சுற்றுப்புற மாவட்டங்கள் உட்பட) முதன்மையாக சேவை செய்கிறது. இந்தியா முழுவதும் கட்டமைக்கப்பட்ட டிஜிட்டல் விரிவாக்கம் திட்டமிடப்பட்டுள்ளது. உங்கள் பின்கோடில் கூட்டாளர் கவரேஜ் விரிவாக்கத்தின் போது மாறுபடலாம்.',
+      'தற்போது FinZolve தமிழ்நாடு முழுவதும் சேவை செய்கிறது; இந்தியாவின் பிற பகுதிகளுக்கு கட்டமைக்கப்பட்ட விரிவாக்கம் திட்டமிடப்பட்டுள்ளது. உங்கள் பின்கோடில் கூட்டாளர் கவரேஜ் மாறுபடலாம்.',
       'தரவுப் பாதுகாப்பிற்கு நாங்கள் முன்னுரிமை அளித்தாலும், இணையத்தில் நடக்கும் எந்தவொரு அங்கீகரிக்கப்படாத தரவுக் கசிவு அல்லது ஹேக்கிங்கிற்கு FinZolve சட்டரீதியாகப் பொறுப்பேற்காது.',
       'தரவு திருத்தம் support@finzolve.in மூலம் கோரலாம். விண்ணப்ப தரவு கூட்டாளர் பொருத்தம் மற்றும் இந்திய சட்ட விதிமுறைகளுக்கு தேவையான காலம் மட்டுமே வைக்கப்படும்.',
     ],
@@ -76,7 +76,7 @@ const legalHi: Record<LegalDocType, LegalDocument> = {
     lastUpdated: 'अंतिम अपडेट: मई 2026',
     body: [
       'FinZolve विशुद्ध रूप से एक डिजिटल डेटा राउटर के रूप में संचालित होता है। अपना मोबाइल नंबर, PAN विवरण और वित्तीय जानकारी दर्ज करके, आप FinZolve को पंजीकृत बैंकों और NBFC साझेदारों को आपका डेटा एकत्र, संग्रहीत, संसाधित और प्रसारित करने के लिए बिना शर्त, अपरिवर्तनीय सहमति प्रदान करते हैं।',
-      'वर्तमान में FinZolve मुख्य रूप से दक्षिण भारत (तमिलनाडु — कोयंबटूर, तिरुचिरापल्ली, नामक्कल और आसपास के जिलों सहित) में सेवा करता है। चरणबद्ध PAN-India डिजिटल विस्तार की योजना है।',
+      'वर्तमान में FinZolve पूरे तमिलनाडु में सेवा करता है; भारत के अन्य क्षेत्रों में चरणबद्ध विस्तार की योजना है।',
       'हालांकि हम उद्योग-मानक 256-बिट एन्क्रिप्शन का उपयोग करते हैं, उपयोगकर्ता स्वीकार करता है कि कोई भी डिजिटल प्रसारण 100% सुरक्षित नहीं है। अनधिकृत तीसरे पक्ष के हैक, डेटा लीक या हमारे बुनियादी ढांचे से परे प्रसंस्करण त्रुटियों के लिए FinZolve पूर्णतः क्षतिपूर्ति योग्य है।',
       'डेटा सुधार के लिए support@finzolve.in पर लिखें।',
     ],

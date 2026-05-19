@@ -33,7 +33,7 @@ export interface TranslationBundle {
     features: Array<{ title: string; description: string }>
   }
   about: { title: string; body: string }
-  contact: { title: string; email: string; districtsLabel: string; districts: string[] }
+  contact: { title: string; email: string; serviceRegion: string }
   application: { title: string; subtitle: string }
   loans: LoanTranslations
   form: {
@@ -353,8 +353,7 @@ export const translations: Record<Language, TranslationBundle> = {
     contact: {
       title: 'Contact Us',
       email: 'support@finzolve.in',
-      districtsLabel: 'Service districts (Tamil Nadu)',
-      districts: ['Coimbatore', 'Trichy', 'Namakkal'],
+      serviceRegion: 'Service area: Tamil Nadu, India',
     },
     application: {
       title: 'Start Your Application',
@@ -371,7 +370,7 @@ export const translations: Record<Language, TranslationBundle> = {
       terms: 'Terms & Conditions',
       trustBadge: "In Association with India's Premier Distribution Network",
       panIndia:
-        'Currently serving Southern India. Planned phased PAN-India digital expansion.',
+        'Serving Tamil Nadu today. Planned phased expansion across India.',
       rights: 'All rights reserved.',
     },
   },
@@ -432,8 +431,7 @@ export const translations: Record<Language, TranslationBundle> = {
     contact: {
       title: 'தொடர்பு கொள்ளுங்கள்',
       email: 'support@finzolve.in',
-      districtsLabel: 'சேவை மாவட்டங்கள் (தமிழ்நாடு)',
-      districts: ['கோயம்புத்தூர்', 'திருச்சி', 'நாமக்கல்'],
+      serviceRegion: 'சேவை பிராந்தியம்: தமிழ்நாடு, இந்தியா',
     },
     application: {
       title: 'உங்கள் விண்ணப்பத்தைத் தொடங்குங்கள்',
@@ -450,7 +448,7 @@ export const translations: Record<Language, TranslationBundle> = {
       terms: 'விதிமுறைகள் & நிபந்தனைகள்',
       trustBadge: 'இந்தியாவின் முன்னணி விநியோக வலையமைப்புடன் இணைந்து',
       panIndia:
-        'தற்போது தென்னிந்தியாவில் சேவை. இந்தியா முழுவதும் கட்டமைக்கப்பட்ட டிஜிட்டல் விரிவாக்கம் திட்டமிடப்பட்டுள்ளது.',
+        'தமிழ்நாடு முழுவதும் சேவை. இந்தியா முழுவதும் கட்டமைக்கப்பட்ட விரிவாக்கம் திட்டமிடப்பட்டுள்ளது.',
       rights: 'அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.',
     },
   },
@@ -512,8 +510,7 @@ export const translations: Record<Language, TranslationBundle> = {
     contact: {
       title: 'संपर्क करें',
       email: 'support@finzolve.in',
-      districtsLabel: 'सेवा जिले (तमिलनाडु)',
-      districts: ['कोयंबटूर', 'तिरुचिरापल्ली', 'नामक्कल'],
+      serviceRegion: 'सेवा क्षेत्र: तमिलनाडु, भारत',
     },
     application: {
       title: 'अपना आवेदन शुरू करें',
@@ -530,7 +527,7 @@ export const translations: Record<Language, TranslationBundle> = {
       terms: 'नियम और शर्तें',
       trustBadge: 'भारत के प्रमुख वितरण नेटवर्क के साथ जुड़ाव में',
       panIndia:
-        'वर्तमान में दक्षिण भारत में सेवा। चरणबद्ध PAN-India डिजिटल विस्तार की योजना।',
+        'पूरे तमिलनाडु में सेवा। भारत भर में चरणबद्ध विस्तार की योजना।',
       rights: 'सर्वाधिकार सुरक्षित।',
     },
   },

@@ -55,14 +55,9 @@ export function Footer() {
                 {t.contact.email}
               </a>
             </p>
-            <p style={{ margin: '12px 0 6px', fontSize: 12, fontWeight: 600, color: '#cbd5e1' }}>
-              {t.contact.districtsLabel}
+            <p style={{ margin: '12px 0 0', fontSize: 13, lineHeight: 1.6, color: '#94a3b8' }}>
+              {t.contact.serviceRegion}
             </p>
-            <ul style={{ margin: 0, padding: '0 0 0 18px', fontSize: 14, lineHeight: 1.9, color: '#94a3b8' }}>
-              {t.contact.districts.map((district) => (
-                <li key={district}>{district}</li>
-              ))}
-            </ul>
             <p style={{ margin: '12px 0 0', fontSize: 12, lineHeight: 1.6, color: '#64748b' }}>{t.footer.panIndia}</p>
           </div>
         </div>
