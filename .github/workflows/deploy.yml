@@ -23,14 +23,28 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Install and build
+      - name: Install and build production site
         run: |
           npm ci
           npm run build
           cp dist/index.html dist/404.html
           touch dist/.nojekyll
 
-      - name: Deploy built site to gh-pages branch
+      - name: Copy build into docs/ (for Pages: main branch, /docs folder)
+        run: |
+          rm -rf docs
+          mkdir -p docs
+          cp -r dist/* docs/
+          cp dist/.nojekyll docs/.nojekyll
+
+      - name: Commit docs/ to main
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'Deploy production site to docs folder'
+          file_pattern: 'docs/**'
+          branch: main
+
+      - name: Publish same build to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
