@@ -121,10 +121,17 @@ function App() {
   useEffect(() => {
     window.scrollTo(0, 0);
     if (sessionStorage.getItem("finzolve_form_submitted") === "1") {
-      sessionStorage.removeItem("finzolve_form_submitted");
       setFormStep(3);
     }
   }, []);
+
+  useEffect(() => {
+    if (formStep === 3) {
+      setTimeout(() => {
+        document.getElementById('application-engine')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 150);
+    }
+  }, [formStep]);
 
   const handleCardClick = (loanName) => {
     if (activeTab === loanName) {
@@ -179,6 +186,37 @@ function App() {
     }).catch(err => console.error("Capture failed", err));
   };
 
+  const buildWhatsAppUrl = (payload) => {
+    const cityLine =
+      payload.city && payload.state && payload.city !== "Pending"
+        ? `${payload.city}, ${payload.state} - ${payload.pincode}`
+        : payload.pincode;
+
+    const text = encodeURIComponent(
+      `Hi FinZolve, I would like to apply for a loan.\n\n` +
+        `Loan: ${payload.loanType} (${payload.loanPurpose})\n` +
+        `Name: ${payload.firstName} ${payload.lastName}\n` +
+        `Mobile: ${payload.clientMobile}\n` +
+        `Email: ${payload.email}\n` +
+        `PAN: ${payload.panNumber}\n` +
+        `Amount: ₹${payload.loanAmount}\n` +
+        `Location: ${cityLine}\n\n` +
+        `Please assist me.`,
+    );
+
+    return `https://wa.me/918489555955?text=${text}`;
+  };
+
+  const openWhatsAppChat = (url) => {
+    const link = document.createElement("a");
+    link.href = url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  };
+
   const handleInternationalVerificationSubmit = (e) => {
     e.preventDefault();
     if (isSubmitting) return;
@@ -202,9 +240,18 @@ function App() {
       LeadStatus: "WHATSAPP_VERIFIED",
     };
 
-    const sheetBody = JSON.stringify(finalLeadPayload);
+    const whatsappUrl = buildWhatsAppUrl(finalLeadPayload);
 
-    // 1) Google Sheet (both: sheet + WhatsApp)
+    // 1) Open WhatsApp first (same button click — site tab stays open)
+    openWhatsAppChat(whatsappUrl);
+
+    // 2) Show success step on this page (stays here when user comes back from WhatsApp app)
+    setIsSubmitting(false);
+    sessionStorage.setItem("finzolve_form_submitted", "1");
+    setFormStep(3);
+
+    // 3) Google Sheet in background
+    const sheetBody = JSON.stringify(finalLeadPayload);
     fetch(myGoogleAppScriptUrl, {
       method: "POST",
       mode: "no-cors",
@@ -220,37 +267,10 @@ function App() {
     } catch {
       /* ignore */
     }
-
-    // 2) WhatsApp — same tab (no popup / new window), like before
-    executeWhatsAppDeepLinkRedirect(finalLeadPayload);
-  };
-
-  const executeWhatsAppDeepLinkRedirect = (payload) => {
-    const cityLine =
-      payload.city && payload.state && payload.city !== "Pending"
-        ? `${payload.city}, ${payload.state} - ${payload.pincode}`
-        : payload.pincode;
-
-    const textStructure = encodeURIComponent(
-      `Hi FinZolve, I would like to apply for a loan.\n\n` +
-        `Loan: ${payload.loanType} (${payload.loanPurpose})\n` +
-        `Name: ${payload.firstName} ${payload.lastName}\n` +
-        `Mobile: ${payload.clientMobile}\n` +
-        `Email: ${payload.email}\n` +
-        `PAN: ${payload.panNumber}\n` +
-        `Amount: ₹${payload.loanAmount}\n` +
-        `Location: ${cityLine}\n\n` +
-        `Please assist me.`,
-    );
-
-    const targetWhatsAppUrl = `https://wa.me/918489555955?text=${textStructure}`;
-
-    setIsSubmitting(false);
-    sessionStorage.setItem("finzolve_form_submitted", "1");
-    window.location.href = targetWhatsAppUrl;
   };
 
   const resetWholeFormPipeline = () => {
+    sessionStorage.removeItem("finzolve_form_submitted");
     setFormLoanType('');
     setFormPurpose('');
     setMobile('');
@@ -530,7 +550,7 @@ function App() {
               <p style={{ fontSize: '14.5px', color: '#475569', lineHeight: '1.65', margin: '0 0 20px 0' }}>{currentText.successMessage}</p>
               <a
                 href={`https://wa.me/918489555955?text=${encodeURIComponent('Hello FinZolve, I submitted my loan application and need assistance.')}`}
-                target="_self"
+                target="_blank"
                 rel="noreferrer"
                 style={{ display: 'inline-block', marginBottom: '20px', padding: '14px 28px', backgroundColor: '#22c55e', color: '#ffffff', borderRadius: '8px', fontSize: '15px', fontWeight: '700', textDecoration: 'none' }}
               >
