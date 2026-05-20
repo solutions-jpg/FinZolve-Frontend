@@ -23,28 +23,38 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Install and build production site
+      - name: Install and build
         run: |
           npm ci
           npm run build
-          cp dist/index.html dist/404.html
           touch dist/.nojekyll
 
-      - name: Copy build into docs/ (for Pages: main branch, /docs folder)
+      - name: Publish build to repository root (fixes Pages main / root)
+        run: |
+          cp dist/index.html index.html
+          rm -rf assets
+          cp -r dist/assets assets
+          cp dist/favicon.svg favicon.svg 2>/dev/null || true
+          cp dist/robots.txt robots.txt 2>/dev/null || true
+          cp dist/sitemap.xml sitemap.xml 2>/dev/null || true
+          cp dist/CNAME CNAME 2>/dev/null || true
+          cp dist/.nojekyll .nojekyll 2>/dev/null || true
+
+      - name: Publish to docs/ (if Pages uses main /docs)
         run: |
           rm -rf docs
           mkdir -p docs
           cp -r dist/* docs/
           cp dist/.nojekyll docs/.nojekyll
 
-      - name: Commit docs/ to main
+      - name: Commit production files on main
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: 'Deploy production site to docs folder'
-          file_pattern: 'docs/**'
+          commit_message: 'Deploy production build to site root and docs'
+          file_pattern: 'index.html assets/** docs/** favicon.svg robots.txt sitemap.xml CNAME .nojekyll'
           branch: main
 
-      - name: Publish same build to gh-pages branch
+      - name: Publish to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
