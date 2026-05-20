@@ -1,6 +1,58 @@
+:root {
+  --fz-header-offset: 72px;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--fz-header-offset);
+}
+
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   background-color: #f8fafc;
+}
+
+/* Anchor targets: clear the sticky header without a large empty gap */
+section[id],
+footer[id],
+.page-anchor {
+  scroll-margin-top: var(--fz-header-offset);
+}
+
+.section-block {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.section-intro {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.section-intro h2,
+.section-intro h3 {
+  margin: 0 0 10px 0;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+}
+
+.section-intro p {
+  margin: 0;
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section-accent {
+  width: 44px;
+  height: 3px;
+  background: linear-gradient(90deg, #fbbf24, #f59e0b);
+  border-radius: 2px;
+  margin: 0 auto 14px;
 }

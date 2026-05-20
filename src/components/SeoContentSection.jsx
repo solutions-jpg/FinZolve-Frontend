@@ -2,7 +2,7 @@ import { seoContent } from '../seo/seoContent'
 
 const sectionStyle = {
   boxSizing: 'border-box',
-  padding: '56px 40px 64px',
+  padding: '48px 40px 56px',
   width: '100%',
   maxWidth: '900px',
   margin: '0 auto',
@@ -15,7 +15,7 @@ export function SeoContentSection({ lang }) {
   const c = seoContent[lang] || seoContent.en
 
   return (
-    <section id="faq" style={sectionStyle} aria-labelledby="faq-heading">
+    <section id="faq" className="page-anchor" style={sectionStyle} aria-labelledby="faq-heading">
       <h2 id="faq-heading" style={{ fontSize: '24px', fontWeight: '800', color: '#0f172a', margin: '0 0 24px 0' }}>
         {c.faqTitle}
       </h2>

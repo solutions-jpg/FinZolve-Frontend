@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { SeoHead } from './components/SeoHead';
 import { SeoContentSection } from './components/SeoContentSection';
 import { legalDocs, SUPPORT_EMAIL, SUPPORT_PHONE, SUPPORT_PHONE_TEL } from './legal/siteLegal';
@@ -8,7 +8,7 @@ const l = {
     brand: "FinZolve", slogan: "Smart Loans. Simplified.",
     home: "Home", products: "Loan Types", apply: "Apply Now", why: "Why FinZolve?", about: "About Us", contact: "Contact",
     heroTitle: "Your Trusted Partner for Loans in Tamil Nadu", heroSub: "FinZolve connects you with registered banks and NBFCs through one simple application — personal, business, home, gold, and more. Apply in English, Tamil, or Hindi.",
-    cta: "Start Your Application", chooseLoan: "Explore Loan Products", subText: "Select a product below to read an overview and common loan purposes.",
+    cta: "Start Your Application", chooseLoan: "Loan Types", subText: "Choose a loan type below to view details and common purposes.",
     step1Title: "Start Your Application", mobLabel: "Mobile Number", consent: "I have read and agree to:", next: "Continue",
     trustNote: "FinZolve is a loan facilitator, not a lender. Your details are sent securely to registered lending partners.",
     personalTitle: "Step 2: Your Details", fname: "First Name", lname: "Last Name", email: "Email Address",
@@ -44,7 +44,7 @@ const l = {
     brand: "FinZolve", slogan: "ஸ்மார்ட் லோன்கள். எளிமையாக.",
     home: "முகப்பு", products: "லோன் வகைகள்", apply: "விண்ணப்பிக்க", why: "ஏன் FinZolve?", about: "எங்களைப் பற்றி", contact: "தொடர்புக்கு",
     heroTitle: "தமிழ்நாட்டில் நம்பகமான கடன் வழிகாட்டி", heroSub: "FinZolve பதிவுசெய்யப்பட்ட வங்கிகள் மற்றும் NBFC-களுடன் உங்களை இணைக்கிறது — தனிநபர், வணிக, வீட்டு, தங்க கடன்கள் மற்றும் பல. தமிழ், ஆங்கிலம், இந்தியில் விண்ணப்பிக்கலாம்.",
-    cta: "விண்ணப்பத்தைத் தொடங்குங்கள்", chooseLoan: "கடன் தயாரிப்புகள்", subText: "கீழே உள்ள தயாரிப்பைத் தேர்ந்தெடுத்து சுருக்க விளக்கம் மற்றும் நோக்கங்களைப் பார்க்கவும்.",
+    cta: "விண்ணப்பத்தைத் தொடங்குங்கள்", chooseLoan: "லோன் வகைகள்", subText: "கீழே லோன் வகையைத் தேர்ந்தெடுத்து விவரம் மற்றும் நோக்கங்களைப் பார்க்கவும்.",
     step1Title: "விண்ணப்பத்தைத் தொடங்குங்கள்", mobLabel: "மொபைல் எண்", consent: "நான் படித்து ஏற்கிறேன்:", next: "தொடரவும்",
     trustNote: "FinZolve கடன் வழங்குபவர் அல்ல — வசதிப்படுத்தும் தளம். உங்கள் விவரங்கள் பதிவுசெய்யப்பட்ட கடன் கூட்டாளர்களுக்கு பாதுகாப்பாக அனுப்பப்படும்.",
     personalTitle: "படி 2: உங்கள் விவரங்கள்", fname: "முதல் பெயர்", lname: "இறுதிப் பெயர்", email: "மின்னஞ்சல்",
@@ -80,7 +80,7 @@ const l = {
     brand: "FinZolve", slogan: "स्मार्ट लोन। सरलीकृत।",
     home: "होम", products: "लोन के प्रकार", apply: "लागू करें", why: "FinZolve क्यों?", about: "हमारे बारे में", contact: "संपर्क करें",
     heroTitle: "तमिलनाडु में भरोसेमंद लोन साथी", heroSub: "FinZolve आपको पंजीकृत बैंकों और NBFC से जोड़ता है — पर्सनल, बिज़नेस, होम, गोल्ड और अधिक। अंग्रेजी, तमिल या हिंदी में आवेदन करें।",
-    cta: "आवेदन शुरू करें", chooseLoan: "लोन उत्पाद देखें", subText: "नीचे उत्पाद चुनकर संक्षिप्त विवरण और उद्देश्य देखें।",
+    cta: "आवेदन शुरू करें", chooseLoan: "लोन के प्रकार", subText: "नीचे से लोन प्रकार चुनें — विवरण और उद्देश्य देखें।",
     step1Title: "आवेदन शुरू करें", mobLabel: "मोबाइल नंबर", consent: "मैंने पढ़ा और सहमति देता/देती हूँ:", next: "जारी रखें",
     trustNote: "FinZolve ऋणदाता नहीं, सुविधा मंच है। आपका डेटा सुरक्षित रूप से पंजीकृत ऋण भागीदारों को भेजा जाता है।",
     personalTitle: "चरण 2: आपका विवरण", fname: "पहला नाम", lname: "अंतिम नाम", email: "ईमेल",
@@ -142,6 +142,50 @@ function App() {
   });
   const [pincodeLoading, setPincodeLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [activeNav, setActiveNav] = useState('home');
+  const [headerOffset, setHeaderOffset] = useState(72);
+  const headerRef = useRef(null);
+
+  const measureHeader = useCallback(() => {
+    const h = headerRef.current?.offsetHeight ?? 72;
+    const offset = h + 8;
+    setHeaderOffset(offset);
+    document.documentElement.style.setProperty('--fz-header-offset', `${offset}px`);
+  }, []);
+
+  const scrollToAnchor = useCallback((id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + window.scrollY - headerOffset;
+    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+    setActiveNav(id === 'footer' ? 'contact' : id);
+  }, [headerOffset]);
+
+  const scrollToForm = () => scrollToAnchor('application-engine');
+
+  const handleNavClick = (e, target) => {
+    e.preventDefault();
+    if (target === 'home') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setActiveNav('home');
+      return;
+    }
+    scrollToAnchor(target);
+  };
+
+  const navLinkStyle = (key) => ({
+    color: activeNav === key ? '#ffffff' : '#94a3b8',
+    textDecoration: 'none',
+    fontSize: '14px',
+    fontWeight: activeNav === key ? '700' : '600',
+    transition: 'color 0.2s ease',
+  });
+
+  useEffect(() => {
+    measureHeader();
+    window.addEventListener('resize', measureHeader);
+    return () => window.removeEventListener('resize', measureHeader);
+  }, [measureHeader]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -151,10 +195,36 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const sectionIds = ['products', 'application-engine', 'why', 'about', 'footer'];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]) {
+          const id = visible[0].target.id;
+          setActiveNav(id === 'footer' ? 'contact' : id);
+        }
+      },
+      { rootMargin: `-${headerOffset}px 0px -62% 0px`, threshold: [0.12, 0.35] },
+    );
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    const onScrollHome = () => {
+      if (window.scrollY < 120) setActiveNav('home');
+    };
+    window.addEventListener('scroll', onScrollHome, { passive: true });
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', onScrollHome);
+    };
+  }, [headerOffset]);
+
+  useEffect(() => {
     if (formStep === 3) {
-      setTimeout(() => {
-        document.getElementById('application-engine')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 150);
+      setTimeout(() => scrollToAnchor('application-engine'), 150);
     }
   }, [formStep]);
 
@@ -163,9 +233,7 @@ function App() {
       setActiveTab(null);
     } else {
       setActiveTab(loanName);
-      setTimeout(() => {
-        document.getElementById('premium-briefing-hub')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 100);
+      setTimeout(() => scrollToAnchor('premium-briefing-hub'), 100);
     }
   };
 
@@ -321,16 +389,12 @@ function App() {
     return "";
   };
 
-  const scrollToForm = () => {
-    document.getElementById('application-engine')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
   return (
     <div style={{ boxSizing: 'border-box', backgroundColor: '#f8fafc', color: '#0f172a', minHeight: '100vh', margin: 0, padding: 0, fontFamily: 'system-ui, -apple-system, sans-serif' }}>
       <SeoHead lang={lang} />
 
       {/* 1. HEADER */}
-      <header style={{ boxSizing: 'border-box', backgroundColor: '#0f172a', color: '#ffffff', padding: '15px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, zIndex: 1000, width: '100%', flexWrap: 'wrap', gap: '15px' }}>
+      <header ref={headerRef} style={{ boxSizing: 'border-box', backgroundColor: '#0f172a', color: '#ffffff', padding: '14px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, zIndex: 1000, width: '100%', flexWrap: 'wrap', gap: '12px', boxShadow: '0 1px 0 rgba(255,255,255,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
           <svg width="45" height="45" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M50 5L15 20V50c0 25 35 45 35 45s35-20 35-45V20L50 5z" fill="#1e293b" stroke="#fbbf24" strokeWidth="4.5" />
@@ -343,13 +407,13 @@ function App() {
           </div>
         </div>
 
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
-          <a href="#" style={{ color: '#ffffff', textDecoration: 'none', fontSize: '14px', fontWeight: '700' }}>{currentText.home}</a>
-          <a href="#products" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '14px', fontWeight: '600' }}>{currentText.products}</a>
-          <button onClick={scrollToForm} style={{ background: 'none', border: 'none', color: '#fbbf24', cursor: 'pointer', fontWeight: '800', fontSize: '14px', padding: 0 }}>{currentText.apply}</button>
-          <a href="#why" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '14px', fontWeight: '600' }}>{currentText.why}</a>
-          <a href="#about" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '14px', fontWeight: '600' }}>{currentText.about}</a>
-          <a href="#footer" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '14px', fontWeight: '600' }}>{currentText.contact}</a>
+        <nav style={{ display: 'flex', alignItems: 'center', gap: '26px', flexWrap: 'wrap' }}>
+          <a href="#" onClick={(e) => handleNavClick(e, 'home')} style={navLinkStyle('home')}>{currentText.home}</a>
+          <a href="#products" onClick={(e) => handleNavClick(e, 'products')} style={navLinkStyle('products')}>{currentText.products}</a>
+          <button type="button" onClick={scrollToForm} style={{ background: 'none', border: 'none', color: activeNav === 'application-engine' ? '#fde68a' : '#fbbf24', cursor: 'pointer', fontWeight: '800', fontSize: '14px', padding: 0 }}>{currentText.apply}</button>
+          <a href="#why" onClick={(e) => handleNavClick(e, 'why')} style={navLinkStyle('why')}>{currentText.why}</a>
+          <a href="#about" onClick={(e) => handleNavClick(e, 'about')} style={navLinkStyle('about')}>{currentText.about}</a>
+          <a href="#footer" onClick={(e) => handleNavClick(e, 'footer')} style={navLinkStyle('contact')}>{currentText.contact}</a>
         </nav>
 
         <div>
@@ -385,10 +449,11 @@ function App() {
       </section>
 
       {/* 4. PREMIUM DISCOVERY HUB */}
-      <section id="products" style={{ boxSizing: 'border-box', padding: '70px 40px', width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: '45px' }}>
-          <h3 style={{ fontSize: '32px', fontWeight: '800', color: '#0f172a', margin: '0 0 12px 0' }}>{currentText.chooseLoan}</h3>
-          <p style={{ color: '#64748b', fontSize: '15px', margin: 0 }}>{currentText.subText}</p>
+      <section id="products" className="section-block page-anchor" style={{ padding: '56px 40px 64px', maxWidth: '1200px', margin: '0 auto' }}>
+        <div className="section-intro">
+          <div className="section-accent" aria-hidden="true" />
+          <h2 style={{ fontSize: 'clamp(26px, 4vw, 32px)' }}>{currentText.chooseLoan}</h2>
+          <p>{currentText.subText}</p>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', marginBottom: '35px' }}>
@@ -403,7 +468,7 @@ function App() {
         </div>
 
         {activeTab && (
-          <div id="premium-briefing-hub" style={{ backgroundColor: '#0f172a', padding: '35px', borderRadius: '16px', border: '2px solid #fbbf24', color: '#ffffff' }}>
+          <div id="premium-briefing-hub" className="page-anchor" style={{ backgroundColor: '#0f172a', padding: '35px', borderRadius: '16px', border: '2px solid #fbbf24', color: '#ffffff' }}>
             <h5 style={{ fontSize: '20px', fontWeight: '900', color: '#ffffff', margin: '0 0 20px 0', borderBottom: '1px solid #1e293b', paddingBottom: '14px' }}>
               ✦ {currentText.subWindowLabel} <span style={{ color: '#fbbf24' }}>{activeTab}</span>
             </h5>
@@ -430,7 +495,7 @@ function App() {
       </section>
 
       {/* 5. APPLICATION ENGINE */}
-      <section id="application-engine" style={{ boxSizing: 'border-box', padding: '80px 20px', backgroundColor: '#f1f5f9', width: '100%' }}>
+      <section id="application-engine" className="section-block page-anchor" style={{ padding: '56px 20px 64px', backgroundColor: '#f1f5f9' }}>
         <p style={{ maxWidth: '580px', margin: '0 auto 16px', padding: '14px 18px', backgroundColor: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '10px', fontSize: '13px', lineHeight: 1.65, color: '#1e40af', textAlign: 'center', boxSizing: 'border-box' }}>
           {currentText.trustNote}
         </p>
@@ -599,10 +664,13 @@ function App() {
       </section>
 
       {/* 6. WHY CHOOSE FINZOLVE */}
-      <section id="why" style={{ boxSizing: 'border-box', padding: '80px 40px', backgroundColor: '#ffffff', width: '100%' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
-          <h3 style={{ fontSize: '40px', fontWeight: '800', color: '#0f172a', margin: '0 0 12px 0' }}>{currentText.whyTitle}</h3>
-          <p style={{ color: '#64748b', fontSize: '16px', fontWeight: '500', marginBottom: '55px' }}>{currentText.whySub}</p>
+      <section id="why" className="section-block page-anchor" style={{ padding: '56px 40px 64px', backgroundColor: '#ffffff' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <div className="section-intro">
+            <div className="section-accent" aria-hidden="true" />
+            <h2 style={{ fontSize: 'clamp(28px, 4vw, 36px)' }}>{currentText.whyTitle}</h2>
+            <p style={{ marginBottom: '8px' }}>{currentText.whySub}</p>
+          </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '25px', textAlign: 'left' }}>
             <div style={{ backgroundColor: '#ffffff', padding: '35px 30px', borderRadius: '20px', border: '1px solid #f1f5f9' }}>
               <h4 style={{ color: '#0f172a', fontSize: '19px', fontWeight: '800', margin: '0 0 12px 0' }}>{currentText.partnerText}</h4>
@@ -625,17 +693,18 @@ function App() {
       </section>
 
       {/* ABOUT */}
-      <section id="about" style={{ boxSizing: 'border-box', padding: '64px 40px', backgroundColor: '#f8fafc', width: '100%', borderTop: '1px solid #e2e8f0' }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-          <h3 style={{ fontSize: '32px', fontWeight: '800', color: '#0f172a', margin: '0 0 20px 0' }}>{currentText.aboutTitle}</h3>
-          <p style={{ fontSize: '16px', lineHeight: 1.8, color: '#475569', margin: 0 }}>{currentText.aboutBody}</p>
+      <section id="about" className="section-block page-anchor" style={{ padding: '56px 40px 64px', backgroundColor: '#f8fafc', borderTop: '1px solid #e2e8f0' }}>
+        <div className="section-intro" style={{ maxWidth: '800px', margin: '0 auto' }}>
+          <div className="section-accent" aria-hidden="true" />
+          <h2 style={{ fontSize: 'clamp(26px, 4vw, 32px)' }}>{currentText.aboutTitle}</h2>
+          <p style={{ fontSize: '16px', lineHeight: 1.8, color: '#475569' }}>{currentText.aboutBody}</p>
         </div>
       </section>
 
       <SeoContentSection lang={lang} />
 
       {/* 7. FOOTER */}
-      <footer id="footer" style={{ boxSizing: 'border-box', backgroundColor: '#0f172a', color: '#94a3b8', padding: '60px 40px', fontSize: '13.5px', borderTop: '2px solid #1e293b', width: '100%' }}>
+      <footer id="footer" className="section-block page-anchor" style={{ backgroundColor: '#0f172a', color: '#94a3b8', padding: '56px 40px 48px', fontSize: '13.5px', borderTop: '2px solid #1e293b' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '50px', alignItems: 'flex-start' }}>
           <div style={{ flex: '1 1 450px' }}>
             <h4 style={{ color: '#ffffff', fontSize: '20px', fontWeight: '900', margin: '0 0 15px 0' }}>FinZolve</h4>
