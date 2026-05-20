@@ -107,6 +107,6 @@ export const legalContent: Record<Language, Record<LegalDocType, LegalDocument>>
   hi: legalHi,
 }
 
-export const SUPPORT_EMAIL = 'support@finzolve.in'
-export const WHATSAPP_NUMBER = '919876543210'
+export const SUPPORT_EMAIL = 'solutions@finzolve.com'
+export const WHATSAPP_NUMBER = '918489555955'
 export const WHATSAPP_MESSAGE = 'Hello FinZolve, I need assistance with my loan application.'

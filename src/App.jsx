@@ -1,91 +1,116 @@
 import { useState, useEffect } from 'react';
 import { SeoHead } from './components/SeoHead';
 import { SeoContentSection } from './components/SeoContentSection';
+import { legalDocs, SUPPORT_EMAIL, SUPPORT_PHONE, SUPPORT_PHONE_TEL } from './legal/siteLegal';
 
-// 100% Accurate Translation Matrix (International Standard Validation Layout)
 const l = {
   en: {
     brand: "FinZolve", slogan: "Smart Loans. Simplified.",
-    home: "Home", products: "Types of Loan", apply: "Apply Loan", why: "Why FinZolve?", about: "About Us", contact: "Contact Us",
-    heroTitle: "Your Trusted Gateway to Financial Growth", heroSub: "FinZolve is India's ultimate multi-loan hub — access competitive interest rates across 150+ banking partners through one seamless digital journey.",
-    cta: "Check Eligibility Instantly", chooseLoan: "Explore Our Loan Categories", subText: "Click on any product card below to view its official structural sub-categories and eligibility descriptions.",
-    step1Title: "Start Your Application", mobLabel: "Mobile Number", consent: "By continuing, you agree to our Terms and Conditions and Privacy Policy", next: "Next Step",
-    personalTitle: "Step 2: Applicant Information", fname: "First Name", lname: "Last Name", email: "Personal Email ID",
-    panNum: "PAN Number", amtLabel: "Required Loan Amount", pin: "Residential Pincode", city: "City / District", state: "State",
-    submitText: "Verify & Submit via WhatsApp", whyTitle: "Why Choose FinZolve?", whySub: "Enterprise-grade distribution built for Indian borrowers",
-    partnerText: "150+ Bank Partners", secureText: "100% Secure Processing", langText: "Multi-language Help", doorText: "Doorstep Executive Assistance",
-    partnerDesc: "One-stop access to major banks and premium NBFCs across India.", secureDesc: "Bank-grade 256-bit data encryption ensuring absolute data privacy.", langDesc: "Designed beautifully for Indian users to apply in their comfort language.", doorDesc: "Fast verification and transparent process from application to disbursal.",
-    footerText: "FinZolve operates as a digital loan distribution platform serving Tamil Nadu, with planned expansion across India. Governed by applicable laws of India; disputes subject to courts at our registered headquarters in Tamil Nadu.",
-    close: "Close", qrText: "Scan to Apply on Mobile",
+    home: "Home", products: "Loan Types", apply: "Apply Now", why: "Why FinZolve?", about: "About Us", contact: "Contact",
+    heroTitle: "Your Trusted Partner for Loans in Tamil Nadu", heroSub: "FinZolve connects you with registered banks and NBFCs through one simple application — personal, business, home, gold, and more. Apply in English, Tamil, or Hindi.",
+    cta: "Start Your Application", chooseLoan: "Explore Loan Products", subText: "Select a product below to read an overview and common loan purposes.",
+    step1Title: "Start Your Application", mobLabel: "Mobile Number", consent: "I have read and agree to:", next: "Continue",
+    trustNote: "FinZolve is a loan facilitator, not a lender. Your details are sent securely to registered lending partners.",
+    personalTitle: "Step 2: Your Details", fname: "First Name", lname: "Last Name", email: "Email Address",
+    panNum: "PAN Number", amtLabel: "Loan Amount Required (₹)", pin: "Pincode", city: "City / District", state: "State",
+    submitText: "Submit & Continue on WhatsApp", whyTitle: "Why Choose FinZolve?", whySub: "Built for borrowers who want clarity, choice, and support",
+    partnerText: "Wide Lender Network", secureText: "Secure Application", langText: "English, Tamil & Hindi", doorText: "Dedicated Support",
+    partnerDesc: "Access multiple registered banks and NBFCs through one application — we help match you to suitable partners.",
+    secureDesc: "Your application is transmitted over encrypted connections (HTTPS). We share data only with lending partners for processing.",
+    langDesc: "Apply in the language you are most comfortable with — our team can assist in English, Tamil, and Hindi.",
+    doorDesc: "Speak with our team by phone or WhatsApp for guidance from enquiry to partner handover.",
+    aboutTitle: "About FinZolve", aboutBody: "FinZolve is an independent digital loan distribution platform based in Tamil Nadu, India. We help individuals and businesses submit loan enquiries to registered banks and NBFCs. We do not lend money directly and we do not charge consumers a platform fee for standard enquiries. Our goal is to make the application process simple, transparent, and accessible in your preferred language.",
+    footerText: "FinZolve is a digital loan distribution platform serving Tamil Nadu, with planned expansion across India. We are not a bank or NBFC. All loans are sanctioned solely by lending partners.",
+    footerLegal: "Legal", linkPrivacy: "Privacy Policy", linkTerms: "Terms & Conditions", linkDisclaimer: "Disclaimer",
+    hotline: "Phone", helpdesk: "Email", close: "Close", qrText: "Scan to apply on mobile",
     subWindowLabel: "Official Briefing & Overview for", formSelectHeader: "Select Loan Asset Class & Allocation Purpose",
     productOverviewHeader: "Product Structural Summary:", subCatHeader: "Available Custom Purposes / Sub-Categories:",
     selectLoanLabel: "Select Loan Category", selectPurposeLabel: "Select the Purpose",
     chooseSpecificPurposePlaceholder: "-- Select the Purpose --",
     chooseLoanTypePlaceholder: "-- Choose Loan Product --",
-    successHeader: "Application Redirected Successfully!",
-    successMessage: "Thank you for choosing FinZolve. Your profile metrics have been captured securely in our central sheet registry and your secure encryption matrix has initiated a direct encrypted WhatsApp transmission node to our asset alignment desk.",
-    successCTA: "Apply Another Loan",
+    successHeader: "Application Submitted Successfully",
+    successMessage: "Thank you for choosing FinZolve. Your details have been recorded and our team will review your enquiry. If you opened WhatsApp, please send the pre-filled message so we can verify your application faster.",
+    successCTA: "Submit Another Application",
 
-    pLoanSummary: "Tailored multi-purpose personal funding designed for salaried and self-employed professionals. Features dynamic interest mapping, quick verification timelines, zero collateral structural requisites, and flexible restructuring tailored for urgent medical, familial, or educational expenses.",
-    bLoanSummary: "Engineered specifically to scale corporate infrastructure, fulfill capital cash flow demands, or fund retail expansions. Accessible to micro, small, and medium enterprise operations across all trading sectors with premium banking matchers.",
-    hLoanSummary: "Premium asset acquisition pathways enabling seamless home build deployments, structural construction tracking, flat purchases, or plot takeovers. Includes attractive tenure architectures spanning up to 30 years with lower interest pipelines.",
-    lPropertySummary: "Unlock the underlying market equity of your commercial or residential immovable assets without losing tenure control. Maximized loan-to-value matching parameters ensuring higher monetary capital access with lower processing thresholds.",
-    gLoanSummary: "Instant institutional liquidity generated through your gold assets with bank-grade safety assurance protocols. Flexible repayment choices including custom over-draft arrangements or standard term structures.",
-    lSecuritiesSummary: "Capital creation executed seamlessly against your existing high-value market shares, mutual funds, or commercial bonds. Retain your core investment ownership metrics while routing immediate liquidity pipelines.",
-    lPremiumSummary: "Specialized programmatic capital distribution configured to manage and settle premium corporate or individual high-value insurance policies cleanly, preventing structural premium defaults.",
-    privacyFull: "FinZolve strictly operates as a digital data router. By inputting your Mobile Number, PAN metrics, and financial markers, you provide unconditional, irrevocable consent to FinZolve to capture, archive, process, and transmit your data to our network of registered banks and NBFC lending partners across India. While we utilize secure industry-standard 256-bit encryption channels, the user explicitly acknowledges that no digital transmission is 100% immune to breaches.",
-    termsFull: "The user affirms under penalty of perjury that all financial identity items, including PAN ownership, full names, and date of birth details, are lawful, accurate, and belonging solely to the applicant. Any entry of fraudulent, borrowed, or spoofed credentials will make the applicant personally liable for criminal and civil prosecution under the Information Technology Act of India."
+    pLoanSummary: "Unsecured personal loans for salaried and self-employed applicants — for medical needs, education, travel, home improvement, debt consolidation, and other approved purposes. Rates and eligibility are set by the lending partner.",
+    bLoanSummary: "Working capital and business expansion loans for MSMEs and enterprises. Suitable for inventory, equipment, renovation, or cash-flow needs subject to partner policy.",
+    hLoanSummary: "Home purchase, construction, plot, renovation, and balance-transfer options with tenures typically up to 30 years, as offered by partner banks and NBFCs.",
+    lPropertySummary: "Loans against residential or commercial property while you continue to use the asset, subject to valuation and partner LTV norms.",
+    gLoanSummary: "Quick liquidity against gold ornaments with flexible repayment structures including term loans and overdraft facilities, as per partner terms.",
+    lSecuritiesSummary: "Loans against shares, mutual funds, or bonds where permitted — you may retain underlying investments subject to lender margin requirements.",
+    lPremiumSummary: "Financing to pay insurance premiums on eligible policies, helping avoid lapse while terms are defined by the lending partner.",
   },
   ta: {
     brand: "FinZolve", slogan: "ஸ்மார்ட் லோன்கள். எளிமையாக.",
     home: "முகப்பு", products: "லோன் வகைகள்", apply: "விண்ணப்பிக்க", why: "ஏன் FinZolve?", about: "எங்களைப் பற்றி", contact: "தொடர்புக்கு",
-    heroTitle: "உங்கள் பொருளாதார வளர்ச்சிக்கு நம்பகமான வழிகாட்டி!", heroSub: "FinZolve என்பது இந்தியாவின் முதன்மையான மல்டி-லோன் மையமாகும் — 150+ வங்கி கூட்டாளர்களிடம் இருந்து போட்டித்தன்மை வாய்ந்த வட்டி விகிதங்களை ஒரே டிஜிட்டல் தளத்தில் பெற்றிடுங்கள்.",
-    cta: "உடனடி தகுதி சரிபார்ப்பு", chooseLoan: "எங்கள் லோன் பிரிவுகளை ஆராயுங்கள்", subText: "அதன் உள்-பிரிவுகள் மற்றும் லோன் விவரக்குறிப்புகளைப் பார்க்க கீழே உள்ள எந்தவொரு தயாரிப்பு கார்டையும் கிளிக் செய்யவும்.",
-    step1Title: "உங்கள் விண்ணப்பத்தைத் தொடங்குங்கள்", mobLabel: "மொபைல் எண்", consent: "தொடர்வதன் மூலம், எங்களது விதிமுறைகள் மற்றும் நிபந்தனைகள் மற்றும் தனியுரிமைக் கொள்கையை நீங்கள் ஒப்புக்கொள்கிறீர்கள்", next: "அடுத்த படி",
-    personalTitle: "படி 2: சரிபார்ப்பு விவரங்கள்", fname: "முதல் பெயர்", lname: "இறுதிப் பெயர்", email: "மின்னஞ்சல் முகவரி",
-    panNum: "பான் கார்டு எண்", amtLabel: "தேவைப்படும் லோன் தொகை", pin: "வசிப்பிட பின்கோடு", city: "நகரம் / மாவட்டம்", state: "மாநிலம்",
-    submitText: "Verify & Submit via WhatsApp", whyTitle: "ஏன் FinZolve-ஐத் தேர்ந்தெடுக்க வேண்டும்?", whySub: "இந்திய கடன் வாங்குபவர்களுக்காக உருவாக்கப்பட்ட எண்டர்பிரைஸ் விநியோக கட்டமைப்பு",
-    partnerText: "150+ வங்கி கூட்டாளர்கள்", secureText: "100% பாதுகாப்பான செயலாக்கம்", langText: "பல்மொழி உதவி", doorText: "நேரடி வீட்டுச் சேவை உதவி",
-    partnerDesc: "இந்தியா முழுவதும் உள்ள முக்கிய வங்கிகள் மற்றும் NBFC-களை ஒரே இடத்தில் அணுகலாம்.", secureDesc: "உங்கள் தரவு தனியுரிமையை உறுதி செய்யும் வங்கி அளவிலான 256-பிட் குறியாக்கம்.", langDesc: "இந்திய பயனர்கள் தங்களுக்கு வசதியான மொழியில் விண்ணப்பிக்கும் வகையில் வடிவமைக்கப்பட்டுள்ளது.", doorDesc: "லோன் அப்ளிகேஷன் முதல் பணம் விநியோகம் வரை வேகமான சரிபார்ப்பு மற்றும் வெளிப்படையான செயல்முறை.",
-    footerText: "FinZolve தமிழ்நாடு முழுவதும் சேவை செய்யும் டிஜிட்டல் கடன் விநியோக தளம்; இந்தியா முழுவதும் விரிவாக்கம் திட்டமிடப்பட்டுள்ளது. இந்திய சட்டங்களுக்கு உட்பட்டது; விவாதங்கள் தமிழ்நாடு தலைமைப் பதிவு நீதிமன்ற எல்லைக்கு உட்பட்டவை.",
-    close: "மூடு", qrText: "மொபைலில் விண்ணப்பிக்க ஸ்கேன் செய்யவும்",
+    heroTitle: "தமிழ்நாட்டில் நம்பகமான கடன் வழிகாட்டி", heroSub: "FinZolve பதிவுசெய்யப்பட்ட வங்கிகள் மற்றும் NBFC-களுடன் உங்களை இணைக்கிறது — தனிநபர், வணிக, வீட்டு, தங்க கடன்கள் மற்றும் பல. தமிழ், ஆங்கிலம், இந்தியில் விண்ணப்பிக்கலாம்.",
+    cta: "விண்ணப்பத்தைத் தொடங்குங்கள்", chooseLoan: "கடன் தயாரிப்புகள்", subText: "கீழே உள்ள தயாரிப்பைத் தேர்ந்தெடுத்து சுருக்க விளக்கம் மற்றும் நோக்கங்களைப் பார்க்கவும்.",
+    step1Title: "விண்ணப்பத்தைத் தொடங்குங்கள்", mobLabel: "மொபைல் எண்", consent: "நான் படித்து ஏற்கிறேன்:", next: "தொடரவும்",
+    trustNote: "FinZolve கடன் வழங்குபவர் அல்ல — வசதிப்படுத்தும் தளம். உங்கள் விவரங்கள் பதிவுசெய்யப்பட்ட கடன் கூட்டாளர்களுக்கு பாதுகாப்பாக அனுப்பப்படும்.",
+    personalTitle: "படி 2: உங்கள் விவரங்கள்", fname: "முதல் பெயர்", lname: "இறுதிப் பெயர்", email: "மின்னஞ்சல்",
+    panNum: "பான் எண்", amtLabel: "தேவையான கடன் தொகை (₹)", pin: "பின்கோடு", city: "நகரம் / மாவட்டம்", state: "மாநிலம்",
+    submitText: "சமர்ப்பித்து வாட்ஸ்அப்பில் தொடரவும்", whyTitle: "ஏன் FinZolve?", whySub: "தெளிவு, தேர்வு மற்றும் ஆதரவு — இந்திய கடன் வாங்குபவர்களுக்காக",
+    partnerText: "பரந்த வங்கி வலையமைப்பு", secureText: "பாதுகாப்பான விண்ணப்பம்", langText: "தமிழ், ஆங்கிலம், இந்தி", doorText: "அர்ப்பணிப்பு ஆதரவு",
+    partnerDesc: "ஒரே விண்ணப்பத்தில் பல பதிவுசெய்யப்பட்ட வங்கிகள் மற்றும் NBFC-கள் — உங்களுக்கு ஏற்ற கூட்டாளரைப் பொருத்த உதவுகிறோம்.",
+    secureDesc: "HTTPS குறியாக்க வழியில் தரவு அனுப்பப்படும். செயலாக்கத்திற்கு கடன் கூட்டாளர்களுடன் மட்டுமே பகிர்வு.",
+    langDesc: "உங்களுக்கு வசதியான மொழியில் விண்ணப்பிக்கவும் — எங்கள் குழு தமிழ், ஆங்கிலம், இந்தியில் உதவும்.",
+    doorDesc: "விசாரணை முதல் கூட்டாளர் ஒப்பந்தம் வரை தொலைபேசி அல்லது வாட்ஸ்அப்பில் வழிகாட்டுதல்.",
+    aboutTitle: "FinZolve பற்றி", aboutBody: "FinZolve தமிழ்நாட்டைத் தளமாகக் கொண்ட சுயாதீன டிஜிட்டல் கடன் விநியோக தளம். தனிநபர்கள் மற்றும் வணிகங்கள் பதிவுசெய்யப்பட்ட வங்கி/NBFC-களுக்கு விண்ணப்பம் அனுப்ப உதவுகிறோம். நாங்கள் நேரடியாக கடன் வழங்குவதில்லை; நிலையான விண்ணப்பத்திற்கு தளக் கட்டணம் வசூலிக்க மாட்டோம்.",
+    footerText: "FinZolve தமிழ்நாடு முழுவதும் சேவை செய்யும் டிஜிட்டல் கடன் விநியோக தளம். வங்கி அல்ல, NBFC அல்ல. கடன் ஒப்புதல் கூட்டாளர் வங்கியின் முடிவு.",
+    footerLegal: "சட்டம்", linkPrivacy: "தனியுரிமை", linkTerms: "விதிமுறைகள்", linkDisclaimer: "பொறுப்புத் துறப்பு",
+    hotline: "தொலைபேசி", helpdesk: "மின்னஞ்சல்", close: "மூடு", qrText: "மொபைலில் விண்ணப்பிக்க ஸ்கேன் செய்யவும்",
     subWindowLabel: "அதிகாரப்பூர்வ லோன் விளக்கம் மற்றும் கட்டமைப்பு:", formSelectHeader: "லோன் வகை மற்றும் ஒதுக்கீட்டு நோக்கத்தைத் தேர்ந்தெடுக்கவும்",
     productOverviewHeader: "தயாரிப்பு விளக்கச் சுருக்கம்:", subCatHeader: "கிடைக்கக்கூடிய லோன் உள்-பிரிவுகள் (நோக்கங்கள்):",
     selectLoanLabel: "லோன் வகையைத் தேர்ந்தெடுக்கவும்", selectPurposeLabel: "லோன் நோக்கத்தைத் தேர்ந்தெடுக்கவும்",
     chooseSpecificPurposePlaceholder: "-- லோன் நோக்கத்தைத் தேர்ந்தெடுக்கவும் --",
     chooseLoanTypePlaceholder: "-- லோன் வகையைத் தேர்ந்தெடுக்கவும் --",
-    successHeader: "விண்ணப்பம் சமர்ப்பிக்கப்பட்டது!",
-    successMessage: "FinZolve-ஐத் தேர்ந்தெடுத்ததற்கு நன்றி. உங்களது விவரங்கள் அனைத்தும் கூகுள் ஷீட்டில் பாதுகாப்பாகச் சேமிக்கப்பட்டு, உங்களது அசல் எண்ணை சரிபார்க்க நேரடி வாட்ஸ்அப் தளம் தற்போது உருவாக்கப்பட்டுள்ளது.",
+    successHeader: "விண்ணப்பம் வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது",
+    successMessage: "FinZolve-ஐத் தேர்ந்தெடுத்ததற்கு நன்றி. உங்கள் விவரங்கள் பதிவு செய்யப்பட்டுள்ளன. வாட்ஸ்அப்பைத் திறந்திருந்தால், முன்விரித்த செய்தியை அனுப்பினால் விரைவாகச் சரிபார்க்கலாம்.",
     successCTA: "மற்றொரு லோனுக்கு விண்ணப்பிக்க",
 
-    pLoanSummary: "மாத சம்பளம் பெறுபவர்கள் மற்றும் சுயதொழில் செய்யும் நிபுணர்களுக்காக வடிவமைக்கப்பட்ட பன்னோக்கு தனிநபர் கடன். இது எவ்வித பிணையும் (Collateral) இல்லாமல், மருத்துவச் செலவுகள், குடும்ப சுபகாரியங்கள் அல்லது கல்வித் தேவைகளுக்கான அவசர பணப்புழக்கத்தை விரைவான சரிபார்ப்பு மற்றும் நெகிழ்வான கால அளவுகளுடன் வழங்குகிறது.",
-    bLoanSummary: "வணிக உள்கட்டமைப்பை மேம்படுத்த, மூலதன பணப்புழக்கத் தேவைகளைப் பூர்த்தி செய்ய அல்லது சில்லறை வணிகத்தை விரிவுபடுத்த பிரத்யேகமாக வடிவமைக்கப்பட்டது. இந்தியாவின் முன்னணி வங்கிகள் மூலம் குறு, சிறு மற்றும் நடுத்தர தொழில் நிறுவனங்களுக்கு (MSME) எளிதாகக் கடன் பொருத்தங்களை வழங்குகிறது.",
-    hLoanSummary: "புதிய வீடு கட்ட, அடுக்குமாடி குடியிருப்பு வாங்க அல்லது வீட்டு மனை நிலங்களை கையகப்படுத்த உதவும் உயர்தர சொத்து வாங்குதல் லோன் பாதை. குறைவான வட்டி விகிதங்கள் மற்றும் 30 ஆண்டுகள் வரையிலான நீண்ட கால அவகாச கட்டமைப்புகளை உள்ளடக்கியது.",
-    lPropertySummary: "உங்கள் வணிக அல்லது குடியிருப்பு அசையாச் சொத்துகளின் சந்தை மதிப்பை (Equity) பயன்படுத்தி பெரும் மூலதனத்தைப் பெறுங்கள். சொத்தின் மீதான உரிமையை இழக்காமல், குறைந்த செயலாக்கக் கட்டணங்களுடன் அதிக கடன் தொகையை அணுகுவதை இது உறுதி செய்கிறது.",
-    gLoanSummary: "உங்களின் தங்க நகைகளுக்கு வங்கி அளவிலான பாதுகாப்பு நெறிமுறைகளுடன் உடனடி பணப்புழக்கத்தை உருவாக்குங்கள். ஓவர்-டிராஃப்ட் (OD) வசதி அல்லது நிலையான கடன் கால முறைகள் உள்ளிட்ட நெகிழ்வான திருப்பிச் செலுத்தும் தேர்வுகள் உள்ளன.",
-    lSecuritiesSummary: "நீங்கள் ஏற்கனவே வைத்துள்ள உயர்தர சந்தைப் பங்குகள், பரஸ்பர நிதிகள் (Mutual Funds) அல்லது கார்ப்பரேட் பாண்டுகளுக்கு எதிராக உடனடி மூலதனத்தைப் பெற்றிடுங்கள். உங்களது முதலீடுகளை விற்காமல் அதன் உரிமையைத் தக்கவைத்துக் கொண்டே அவசர நிதியைப் பெறலாம்.",
-    lPremiumSummary: "நிறுவனங்கள் அல்லது தனிநபர்களின் உயர்தர காப்பீட்டுக் கொள்கை பிரீமியங்களை (Insurance Premiums) எவ்வித தடையுமின்றி முறையாகச் செலுத்தவும், பிரீமியம் தவறுகளால் பாலிசி ரத்து செய்யப்படுவதைத் தவிர்க்கவும் உதவும் பிரத்யேக கடன் விநியோக முறை."
+    pLoanSummary: "சம்பளம் / சுயதொழில் பெறுபவர்களுக்கான பிணையமில்லா தனிநபர் கடன் — மருத்துவம், கல்வி, பயணம், வீட்டு மேம்பாடு, கடன் ஒருங்கிணைப்பு போன்ற நோக்கங்களுக்கு. வட்டி மற்றும் தகுதி கூட்டாளர் வங்கி தீர்மானம்.",
+    bLoanSummary: "MSME மற்றும் நிறுவனங்களுக்கு பணப்புழக்கம், விரிவாக்கம், உபகரணம் போன்ற வணிகக் கடன்கள் — கூட்டாளர் கொள்கையின்படி.",
+    hLoanSummary: "வீடு வாங்குதல், கட்டுமானம், மனை, நவீनीकरணம், பேலன்ஸ் டிரான்ஸ்ஃபர் — பொதுவாக 30 ஆண்டுகள் வரை, கூட்டாளர் வங்கி வழங்கும்.",
+    lPropertySummary: "குடியிருப்பு / வணிக சொத்துக்கு எதிரான கடன் — மதிப்பீடு மற்றும் LTV கூட்டாளர் விதிகளின்படி.",
+    gLoanSummary: "தங்கத்திற்கு எதிரான உடனடி நிதி — காலக் கடன் அல்லது ஓவர் டிராஃப்ட், கூட்டாளர் விதிமுறைகளின்படி.",
+    lSecuritiesSummary: "பங்கு, மியூச்சுவல் ஃபண்ட், பாண்டுக்கு எதிரான கடன் (அனுமதி உள்ள இடங்களில்).",
+    lPremiumSummary: "காப்பீட்டு பிரீமியம் செலுத்த உதவும் கடன் — கூட்டாளர் விதிமுறைகளின்படி.",
   },
   hi: {
     brand: "FinZolve", slogan: "स्मार्ट लोन। सरलीकृत।",
     home: "होम", products: "लोन के प्रकार", apply: "लागू करें", why: "FinZolve क्यों?", about: "हमारे बारे में", contact: "संपर्क करें",
-    heroTitle: "आपके वित्तीय विकास का भरोसेमंद साथी", heroSub: "FinZolve भारत का बेहतरीन मल्टी-लोन हब है — एक ही डिजिटल यात्रा के माध्यम से 150+ banking भागीदारों में प्रतिस्पर्धी ब्याज दरों तक पहुंचें।",
-    cta: "पात्रता की तुरंत जांच करें", chooseLoan: "हमारे लोन श्रेणियों का अन्वेषण करें", subText: "इसके संरचनात्मक उप-श्रेणियों और आधिकारिक विवरणों को देखने के लिए नीचे किसी भी उत्पाद कार्ड पर क्लिक करें।",
-    step1Title: "अपना आवेदन शुरू करें", mobLabel: "मोबाइल नंबर", consent: "आगे बढ़कर, आप हमारे नियम और शर्तों और गोपनीयता नीति से सहमत होते हैं", next: "आगे बढ़ें",
-    personalTitle: "चरण 2: सत्यापन विवरण", fname: "पहला नाम", lname: "अंतिम नाम", email: "व्यक्तिगत ईमेल आईडी",
-    panNum: "पैन नंबर", amtLabel: "आवश्यक लोन राशि", pin: "पिनकोड", city: "शहर / जिला", state: "राज्य",
-    submitText: "Verify & Submit via WhatsApp", whyTitle: "FinZolve क्यों चुनें?", whySub: "भारतीय उधारकर्ताओं के लिए निर्मित एंटरप्राइज-ग्रेड वितरण नेटवर्क",
-    partnerText: "150+ Bank भागीदार", secureText: "100% सुरक्षित प्रसंस्करण", langText: "बहुभाषी सहायता", doorText: "घर पर कार्यकारी सहायता",
-    partnerDesc: "भारत भर के प्रमुख बैंकों और प्रीमियम एनबीएफसी तक वन-स्टॉप पहुंच।", secureDesc: "पूर्ण डेटा गोपनीयता सुनिश्चित करने वाला बैंक-ग्रेड 256-बिट डेटा एन्क्रिप्शन।", langDesc: "भारतीय उपयोगकर्ताओं के लिए उनकी आरामदायक भाषा में आवेदन करने के लिए खूबसूरती से डिज़ाइन किया गया।", doorDesc: "आवेदन से लेकर वितरण तक तेजी से सत्यापन और पारदर्शी प्रक्रिया।",
-    footerText: "FinZolve तमिलनाडु में सेवा करने वाला डिजिटल लोन वितरण मंच; भारत भर में विस्तार की योजना। भारतीय कानूनों के अधीन; विवाद तमिलनाडु मुख्यालय की अदालतों के अधीन।",
-    close: "बंद करें", qrText: "मोबाइल पर आवेदन करने के लिए स्कैन करें",
+    heroTitle: "तमिलनाडु में भरोसेमंद लोन साथी", heroSub: "FinZolve आपको पंजीकृत बैंकों और NBFC से जोड़ता है — पर्सनल, बिज़नेस, होम, गोल्ड और अधिक। अंग्रेजी, तमिल या हिंदी में आवेदन करें।",
+    cta: "आवेदन शुरू करें", chooseLoan: "लोन उत्पाद देखें", subText: "नीचे उत्पाद चुनकर संक्षिप्त विवरण और उद्देश्य देखें।",
+    step1Title: "आवेदन शुरू करें", mobLabel: "मोबाइल नंबर", consent: "मैंने पढ़ा और सहमति देता/देती हूँ:", next: "जारी रखें",
+    trustNote: "FinZolve ऋणदाता नहीं, सुविधा मंच है। आपका डेटा सुरक्षित रूप से पंजीकृत ऋण भागीदारों को भेजा जाता है।",
+    personalTitle: "चरण 2: आपका विवरण", fname: "पहला नाम", lname: "अंतिम नाम", email: "ईमेल",
+    panNum: "PAN नंबर", amtLabel: "आवश्यक राशि (₹)", pin: "पिनकोड", city: "शहर / जिला", state: "राज्य",
+    submitText: "जमा करें और WhatsApp पर जारी रखें", whyTitle: "FinZolve क्यों?", whySub: "स्पष्टता, विकल्प और सहायता — भारतीय उधारकर्ताओं के लिए",
+    partnerText: "व्यापक ऋणदाता नेटवर्क", secureText: "सुरक्षित आवेदन", langText: "अंग्रेजी, तमिल, हिंदी", doorText: "समर्पित सहायता",
+    partnerDesc: "एक आवेदन में कई पंजीकृत बैंक और NBFC — उपयुक्त भागीदार से मिलान में मदद।",
+    secureDesc: "HTTPS पर एन्क्रिप्टेड प्रसारण। डेटा केवल ऋण भागीदारों के साथ साझा।",
+    langDesc: "अपनी सुविधाजनक भाषा में आवेदन करें — हमारी टीम अंग्रेजी, तमिल, हिंदी में सहायता करती है।",
+    doorDesc: "पूछताछ से भागीदार हस्तांतरण तक फोन या WhatsApp पर मार्गदर्शन।",
+    aboutTitle: "FinZolve के बारे में", aboutBody: "FinZolve तमिलनाडु, भारत में आधारित स्वतंत्र डिजिटल लोन वितरण मंच है। हम व्यक्तियों और व्यवसायों को पंजीकृत बैंक/NBFC को आवेदन भेजने में मदद करते हैं। हम सीधे ऋण नहीं देते; मानक पूछताछ के लिए प्लेटफ़ॉर्म शुल्क नहीं।",
+    footerText: "FinZolve तमिलनाडु में सेवा करने वाला डिजिटल लोन वितरण मंच। बैंक/NBFC नहीं। ऋण केवल भागीदार द्वारा स्वीकृत।",
+    footerLegal: "कानूनी", linkPrivacy: "गोपनीयता", linkTerms: "नियम", linkDisclaimer: "अस्वीकरण",
+    hotline: "फोन", helpdesk: "ईमेल", close: "बंद करें", qrText: "मोबाइल पर आवेदन के लिए स्कैन करें",
     subWindowLabel: "इसके लिए उपलब्ध विवरण और उप-श्रेणियां:", formSelectHeader: "लोन एसेट क्लास और आवंटन उद्देश्य का चयन करें",
     productOverviewHeader: "उत्पाद संरचनात्मक सारांश:", subCatHeader: "उपलब्ध लोन उप-श्रेणियां (उद्देश्य):",
     selectLoanLabel: "लोन श्रेणी का चयन करें", selectPurposeLabel: "लोन का उद्देश्य चुनें",
     chooseSpecificPurposePlaceholder: "-- लोन का उद्देश्य चुनें --",
     chooseLoanTypePlaceholder: "-- लोन उत्पाद चुनें --",
-    successHeader: "आवेदन प्रस्तुत किया गया!",
-    successMessage: "FinZolve चुनने के लिए धन्यवाद। आपका विवरण सुरक्षित रूप से दर्ज कर लिया गया है और वास्तविक व्हाट्सएप सत्यापन शुरू कर दिया गया है।"
+    successHeader: "आवेदन सफलतापूर्वक जमा हुआ",
+    successMessage: "FinZolve चुनने के लिए धन्यवाद। आपका विवरण दर्ज हो गया है। यदि WhatsApp खुला है, तो पूर्व-भरी संदेश भेजें ताकि हम तेज़ी से सत्यापित कर सकें।",
+    successCTA: "दूसरा आवेदन करें",
+
+    pLoanSummary: "वेतनभोगी और स्व-रोजगार के लिए अनसिक्योर्ड पर्सनल लोन — चिकित्सा, शिक्षा, यात्रा, घर सुधार आदि। दरें ऋणदाता तय करते हैं।",
+    bLoanSummary: "MSME और उद्यमों के लिए कार्यशील पूंजी और विस्तार ऋण।",
+    hLoanSummary: "घर खरीद, निर्माण, प्लॉट, नवीनीकरण — अक्सर 30 वर्ष तक की अवधि, भागीदार के अनुसार।",
+    lPropertySummary: "आवासीय या व्यावसायिक संपत्ति पर ऋण, भागीदार मूल्यांकन के अनुसार।",
+    gLoanSummary: "सोने पर त्वरित तरलता, भागीदार शर्तों के अनुसार चुकौती विकल्प।",
+    lSecuritiesSummary: "शेयर, म्यूचुअल फंड या बॉन्ड पर ऋण, जहाँ अनुमत हो।",
+    lPremiumSummary: "बीमा प्रीमियम भुगतान के लिए वित्तपोषण, भागीदार शर्तों पर।",
   }
 };
 
@@ -165,7 +190,6 @@ function App() {
     }
   }, [formData.pincode]);
 
-  // App பங்க்ஷனுக்குள், மற்ற பங்க்ஷன்களுடன் சேர்த்து இதை வைக்கவும்:
   const captureAbandonedLead = (mobileNumber) => {
     const myGoogleAppScriptUrl = "https://script.google.com/macros/s/AKfycbxfHKPBV7UyMZvWvlqavdqRVnC2HKaHCtOEHQsiO9v4SegZhtWsQ6dFJ23_z_h7KeaE/exec";
     
@@ -176,7 +200,7 @@ function App() {
       clientMobile: mobileNumber,
       firstName: "N/A", lastName: "N/A", email: "N/A", panNumber: "N/A", 
       loanAmount: "0", pincode: "0", city: "N/A", state: "N/A",
-      LeadStatus: "ABANDONED_LEAD" // இதுதான் மிக முக்கியம்
+      LeadStatus: "ABANDONED_LEAD"
     };
   
     fetch(myGoogleAppScriptUrl, {
@@ -284,6 +308,7 @@ function App() {
   };
 
   const currentText = l[lang] || l['en'];
+  const currentLegal = legalDocs[lang] || legalDocs.en;
 
   const getTabSummary = (tab) => {
     if (tab === "Personal Loan") return currentText.pLoanSummary;
@@ -323,6 +348,7 @@ function App() {
           <a href="#products" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '14px', fontWeight: '600' }}>{currentText.products}</a>
           <button onClick={scrollToForm} style={{ background: 'none', border: 'none', color: '#fbbf24', cursor: 'pointer', fontWeight: '800', fontSize: '14px', padding: 0 }}>{currentText.apply}</button>
           <a href="#why" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '14px', fontWeight: '600' }}>{currentText.why}</a>
+          <a href="#about" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '14px', fontWeight: '600' }}>{currentText.about}</a>
           <a href="#footer" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '14px', fontWeight: '600' }}>{currentText.contact}</a>
         </nav>
 
@@ -405,6 +431,9 @@ function App() {
 
       {/* 5. APPLICATION ENGINE */}
       <section id="application-engine" style={{ boxSizing: 'border-box', padding: '80px 20px', backgroundColor: '#f1f5f9', width: '100%' }}>
+        <p style={{ maxWidth: '580px', margin: '0 auto 16px', padding: '14px 18px', backgroundColor: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '10px', fontSize: '13px', lineHeight: 1.65, color: '#1e40af', textAlign: 'center', boxSizing: 'border-box' }}>
+          {currentText.trustNote}
+        </p>
         <div style={{ maxWidth: '580px', margin: '0 auto', backgroundColor: '#ffffff', padding: '40px', borderRadius: '16px', boxShadow: '0 12px 30px rgba(0,0,0,0.06)' }}>
           {formStep === 1 && (
             <div>
@@ -461,9 +490,14 @@ function App() {
               </div>
 
               {/* Consent Checkbox */}
-              <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '30px' }}>
-                <input type="checkbox" id="consent" disabled={!mobile} checked={consentChecked} onChange={(e) => setConsentChecked(e.target.checked)} style={{ width: '18px', height: '18px' }} />
-                <label htmlFor="consent" style={{ fontSize: '13px', color: '#475569' }}>{currentText.consent}</label>
+              <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', marginBottom: '30px' }}>
+                <input type="checkbox" id="consent" disabled={!mobile} checked={consentChecked} onChange={(e) => setConsentChecked(e.target.checked)} style={{ width: '18px', height: '18px', marginTop: '2px', flexShrink: 0 }} />
+                <label htmlFor="consent" style={{ fontSize: '13px', color: '#475569', lineHeight: 1.55 }}>
+                  {currentText.consent}{' '}
+                  (<button type="button" onClick={() => setLegalModal('terms')} style={{ background: 'none', border: 'none', padding: 0, color: '#0f172a', fontWeight: '700', cursor: 'pointer', textDecoration: 'underline', fontSize: 'inherit' }}>{currentText.linkTerms}</button>
+                  {' · '}
+                  <button type="button" onClick={() => setLegalModal('privacy')} style={{ background: 'none', border: 'none', padding: 0, color: '#0f172a', fontWeight: '700', cursor: 'pointer', textDecoration: 'underline', fontSize: 'inherit' }}>{currentText.linkPrivacy}</button>)
+                </label>
               </div>
 
               {/* Next Button */}
@@ -590,50 +624,72 @@ function App() {
         </div>
       </section>
 
+      {/* ABOUT */}
+      <section id="about" style={{ boxSizing: 'border-box', padding: '64px 40px', backgroundColor: '#f8fafc', width: '100%', borderTop: '1px solid #e2e8f0' }}>
+        <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
+          <h3 style={{ fontSize: '32px', fontWeight: '800', color: '#0f172a', margin: '0 0 20px 0' }}>{currentText.aboutTitle}</h3>
+          <p style={{ fontSize: '16px', lineHeight: 1.8, color: '#475569', margin: 0 }}>{currentText.aboutBody}</p>
+        </div>
+      </section>
+
       <SeoContentSection lang={lang} />
 
       {/* 7. FOOTER */}
       <footer id="footer" style={{ boxSizing: 'border-box', backgroundColor: '#0f172a', color: '#94a3b8', padding: '60px 40px', fontSize: '13.5px', borderTop: '2px solid #1e293b', width: '100%' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '50px', alignItems: 'flex-start' }}>
           <div style={{ flex: '1 1 450px' }}>
-            <h4 style={{ color: '#ffffff', fontSize: '20px', fontWeight: '900', margin: '0 0 15px 0' }}>FinZolve International Data Routing Nodes</h4>
+            <h4 style={{ color: '#ffffff', fontSize: '20px', fontWeight: '900', margin: '0 0 15px 0' }}>FinZolve</h4>
             <p style={{ margin: '0 0 30px 0', lineHeight: 1.8, color: '#94a3b8' }}>{currentText.footerText}</p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', backgroundColor: '#131e31', padding: '20px 25px', borderRadius: '12px', border: '1px solid #1e293b', maxWidth: '400px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <span style={{ fontSize: '18px' }}>📞</span>
                 <div>
-                  <p style={{ margin: 0, fontSize: '11px', color: '#64748b', fontWeight: '800', textTransform: 'uppercase' }}>Corporate Hotline</p>
-                  <a href="tel:+918489555955" style={{ color: '#22c55e', textDecoration: 'none', fontSize: '15px', fontWeight: '800' }}>Connect Secure Call Line</a>
+                  <p style={{ margin: 0, fontSize: '11px', color: '#64748b', fontWeight: '800', textTransform: 'uppercase' }}>{currentText.hotline}</p>
+                  <a href={`tel:${SUPPORT_PHONE_TEL}`} style={{ color: '#22c55e', textDecoration: 'none', fontSize: '15px', fontWeight: '800' }}>{SUPPORT_PHONE}</a>
                 </div>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', borderTop: '1px solid #1e293b', paddingTop: '12px' }}>
                 <span style={{ fontSize: '18px' }}>✉</span>
                 <div>
-                  <p style={{ margin: 0, fontSize: '11px', color: '#64748b', fontWeight: '800', textTransform: 'uppercase' }}>Enterprise Helpdesk</p>
-                  <a href="mailto:solutions@finzolve.com?subject=FinZolve%20Loan%20Query" style={{ color: '#38bdf8', fontSize: '15px', fontWeight: '800', textDecoration: 'none' }}>solutions@finzolve.com</a>
+                  <p style={{ margin: 0, fontSize: '11px', color: '#64748b', fontWeight: '800', textTransform: 'uppercase' }}>{currentText.helpdesk}</p>
+                  <a href={`mailto:${SUPPORT_EMAIL}?subject=FinZolve%20Loan%20Query`} style={{ color: '#38bdf8', fontSize: '15px', fontWeight: '800', textDecoration: 'none' }}>{SUPPORT_EMAIL}</a>
                 </div>
               </div>
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '30px', fontWeight: '700', paddingTop: '10px' }}>
-            <span onClick={() => setLegalModal('privacy')} style={{ color: '#ffffff', cursor: 'pointer', textDecoration: 'underline' }}>Privacy Policy</span>
-            <span onClick={() => setLegalModal('terms')} style={{ color: '#ffffff', cursor: 'pointer', textDecoration: 'underline' }}>Terms of Use</span>
+          <div style={{ flex: '0 1 220px' }}>
+            <p style={{ margin: '0 0 14px 0', fontSize: '12px', color: '#64748b', fontWeight: '800', textTransform: 'uppercase' }}>{currentText.footerLegal}</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontWeight: '700' }}>
+              <span onClick={() => setLegalModal('privacy')} style={{ color: '#ffffff', cursor: 'pointer', textDecoration: 'underline' }}>{currentText.linkPrivacy}</span>
+              <span onClick={() => setLegalModal('terms')} style={{ color: '#ffffff', cursor: 'pointer', textDecoration: 'underline' }}>{currentText.linkTerms}</span>
+              <span onClick={() => setLegalModal('disclaimer')} style={{ color: '#ffffff', cursor: 'pointer', textDecoration: 'underline' }}>{currentText.linkDisclaimer}</span>
+            </div>
           </div>
         </div>
         <hr style={{ border: 'none', borderTop: '1px solid #1e293b', margin: '40px 0 25px 0' }} />
+        <p style={{ margin: '0 0 8px 0', color: '#64748b', textAlign: 'center', fontSize: '12px', lineHeight: 1.6 }}>
+          {lang === 'ta' ? 'வங்கி அல்ல · NBFC அல்ல · கடன் ஒப்புதல் கூட்டாளர் வங்கியின் முடிவு' : lang === 'hi' ? 'बैंक नहीं · NBFC नहीं · ऋण स्वीकृति ऋणदाता का निर्णय' : 'Not a bank · Not an NBFC · Loan approval is solely at the lender\'s discretion'}
+        </p>
         <p style={{ margin: 0, color: '#475569', textAlign: 'center', fontWeight: '700' }}>&copy; 2026 FinZolve. All Rights Reserved.</p>
       </footer>
 
       {/* 8. LEGAL OVERLAYS */}
-      {legalModal && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(15,23,42,0.85)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 100000, padding: '20px', boxSizing: 'border-box' }}>
-          <div style={{ backgroundColor: '#ffffff', padding: '35px', borderRadius: '14px', maxWidth: '620px', width: '100%', maxHeight: '80vh', overflowY: 'auto' }}>
-            <h3 style={{ fontSize: '22px', fontWeight: '850', marginBottom: '20px', textTransform: 'uppercase', color: '#0f172a', borderBottom: '2.5px solid #f1f5f9', paddingBottom: '12px', marginTop: 0 }}>{legalModal} Document</h3>
-            {legalModal === 'privacy' && <p style={{ lineHeight: 1.8, fontSize: '14.5px', color: '#334155', margin: 0 }}>{currentText.privacyFull}</p>}
-            {legalModal === 'terms' && <p style={{ lineHeight: 1.8, fontSize: '14.5px', color: '#334155', margin: 0 }}>{currentText.termsFull}</p>}
-            <button onClick={() => setLegalModal(null)} style={{ marginTop: '30px', padding: '14px 24px', backgroundColor: '#ef4444', color: '#ffffff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '700', width: '100%' }}>{currentText.close}</button>
+      {legalModal && currentLegal[legalModal] && (
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(15,23,42,0.85)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 100000, padding: '20px', boxSizing: 'border-box' }} role="dialog" aria-modal="true">
+          <div style={{ backgroundColor: '#ffffff', padding: '35px', borderRadius: '14px', maxWidth: '680px', width: '100%', maxHeight: '85vh', overflowY: 'auto' }}>
+            <h3 style={{ fontSize: '22px', fontWeight: '850', marginBottom: '8px', color: '#0f172a', marginTop: 0 }}>{currentLegal[legalModal].title}</h3>
+            <p style={{ fontSize: '12px', color: '#64748b', margin: '0 0 24px 0' }}>{currentLegal[legalModal].lastUpdated}</p>
+            {currentLegal[legalModal].sections.map((section) => (
+              <div key={section.heading} style={{ marginBottom: '22px' }}>
+                <h4 style={{ fontSize: '15px', fontWeight: '800', color: '#0f172a', margin: '0 0 10px 0' }}>{section.heading}</h4>
+                {section.paragraphs.map((para) => (
+                  <p key={para.slice(0, 40)} style={{ lineHeight: 1.75, fontSize: '14px', color: '#334155', margin: '0 0 10px 0' }}>{para}</p>
+                ))}
+              </div>
+            ))}
+            <button type="button" onClick={() => setLegalModal(null)} style={{ marginTop: '16px', padding: '14px 24px', backgroundColor: '#0f172a', color: '#ffffff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '700', width: '100%' }}>{currentText.close}</button>
           </div>
         </div>
       )}
