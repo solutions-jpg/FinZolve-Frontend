@@ -120,6 +120,10 @@ function App() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    if (sessionStorage.getItem("finzolve_form_submitted") === "1") {
+      sessionStorage.removeItem("finzolve_form_submitted");
+      setFormStep(3);
+    }
   }, []);
 
   const handleCardClick = (loanName) => {
@@ -176,53 +180,74 @@ function App() {
   };
 
   const handleInternationalVerificationSubmit = (e) => {
-  e.preventDefault();
-  setIsSubmitting(true);
-    
-  const myGoogleAppScriptUrl = "https://script.google.com/macros/s/AKfycbxfHKPBV7UyMZvWvlqavdqRVnC2HKaHCtOEHQsiO9v4SegZhtWsQ6dFJ23_z_h7KeaE/exec"; 
+    e.preventDefault();
+    if (isSubmitting) return;
+    setIsSubmitting(true);
 
-  const finalLeadPayload = {
-    timestamp: new Date().toISOString(),
-    loanType: formLoanType,
-    loanPurpose: formPurpose,
-    clientMobile: mobile,
-    firstName: formData.firstName,
-    lastName: formData.lastName,
-    email: formData.email,
-    panNumber: formData.panNumber,
-    loanAmount: formData.loanAmount,
-    pincode: formData.pincode,
-    city: formData.city,
-    state: formData.state,
-    LeadStatus: "WHATSAPP_VERIFIED"
+    const myGoogleAppScriptUrl = "https://script.google.com/macros/s/AKfycbxfHKPBV7UyMZvWvlqavdqRVnC2HKaHCtOEHQsiO9v4SegZhtWsQ6dFJ23_z_h7KeaE/exec";
+
+    const finalLeadPayload = {
+      timestamp: new Date().toISOString(),
+      loanType: formLoanType,
+      loanPurpose: formPurpose,
+      clientMobile: mobile,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      panNumber: formData.panNumber,
+      loanAmount: formData.loanAmount,
+      pincode: formData.pincode,
+      city: formData.city || "Pending",
+      state: formData.state || "Pending",
+      LeadStatus: "WHATSAPP_VERIFIED",
+    };
+
+    const sheetBody = JSON.stringify(finalLeadPayload);
+
+    // 1) Google Sheet (both: sheet + WhatsApp)
+    fetch(myGoogleAppScriptUrl, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: sheetBody,
+    }).catch((err) => console.error("Sheet sync failed", err));
+
+    try {
+      navigator.sendBeacon(
+        myGoogleAppScriptUrl,
+        new Blob([sheetBody], { type: "application/json" }),
+      );
+    } catch {
+      /* ignore */
+    }
+
+    // 2) WhatsApp — same tab (no popup / new window), like before
+    executeWhatsAppDeepLinkRedirect(finalLeadPayload);
   };
 
-  console.log("Sending Payload:", finalLeadPayload); // இதை பிரவுசர் கன்சோலில் பார்க்கவும்
-
-  fetch(myGoogleAppScriptUrl, {
-    method: "POST", mode: "no-cors",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(finalLeadPayload)
-  })
-  .then(() => {
-    console.log("Success!");
-    executeWhatsAppDeepLinkRedirect(finalLeadPayload);
-  })
-  .catch((err) => {
-    console.error("Error:", err);
-  });
-};
-
   const executeWhatsAppDeepLinkRedirect = (payload) => {
-    // Structural high-end enterprise message design containing zero vulnerability exposures
-    const textStructure = `Hi FinZolve, I would like to initiate my loan application. Here are my details:%0A%0A👤 Name: ${formData.firstName} ${formData.lastName}%0A📧 Email: ${formData.email}%0A💳 PAN: ${formData.panNumber}%0A💰 Amount: ₹${formData.loanAmount}%0A📍 Location: ${formData.city}, ${formData.state} - ${formData.pincode}%0A%0APlease assist me.`;
+    const cityLine =
+      payload.city && payload.state && payload.city !== "Pending"
+        ? `${payload.city}, ${payload.state} - ${payload.pincode}`
+        : payload.pincode;
+
+    const textStructure = encodeURIComponent(
+      `Hi FinZolve, I would like to apply for a loan.\n\n` +
+        `Loan: ${payload.loanType} (${payload.loanPurpose})\n` +
+        `Name: ${payload.firstName} ${payload.lastName}\n` +
+        `Mobile: ${payload.clientMobile}\n` +
+        `Email: ${payload.email}\n` +
+        `PAN: ${payload.panNumber}\n` +
+        `Amount: ₹${payload.loanAmount}\n` +
+        `Location: ${cityLine}\n\n` +
+        `Please assist me.`,
+    );
 
     const targetWhatsAppUrl = `https://wa.me/918489555955?text=${textStructure}`;
 
     setIsSubmitting(false);
-    setFormStep(3);
-
-    window.open(targetWhatsAppUrl, "_blank");
+    sessionStorage.setItem("finzolve_form_submitted", "1");
+    window.location.href = targetWhatsAppUrl;
   };
 
   const resetWholeFormPipeline = () => {
@@ -486,10 +511,15 @@ function App() {
               </div>
 
               <button type="submit"
-                disabled={isSubmitting || !formData.city}
-                style={{ width: '100%', padding: '20px', backgroundColor: (formData.city) ? '#22c55e' : '#94a3b8', color: '#ffffff', border: 'none', borderRadius: '12px', fontSize: '17px', fontWeight: '900', cursor: 'pointer' }}>
+                disabled={isSubmitting || formData.pincode.length !== 6}
+                style={{ width: '100%', padding: '20px', backgroundColor: formData.pincode.length === 6 ? '#22c55e' : '#94a3b8', color: '#ffffff', border: 'none', borderRadius: '12px', fontSize: '17px', fontWeight: '900', cursor: isSubmitting ? 'wait' : 'pointer' }}>
                 {isSubmitting ? "Syncing..." : currentText.submitText}
               </button>
+              {formData.pincode.length === 6 && !formData.city && !pincodeLoading && (
+                <p style={{ margin: '8px 0 0', fontSize: '12px', color: '#64748b', textAlign: 'center' }}>
+                  {lang === 'ta' ? 'பின்கோடு சரிபார்க்கப்படுகிறது — நீங்கள் இன்னும் விண்ணப்பிக்கலாம்.' : lang === 'hi' ? 'पिनकोड जाँच हो रही है — आप अभी भी आवेदन कर सकते हैं।' : 'Pincode lookup pending — you can still submit.'}
+                </p>
+              )}
             </form>
           )}
 
@@ -497,7 +527,16 @@ function App() {
             <div style={{ textAlign: 'center', padding: '20px 10px' }}>
               <div style={{ width: '70px', height: '70px', backgroundColor: '#dcfce7', color: '#15803d', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '32px', margin: '0 auto 25px auto' }}>✓</div>
               <h3 style={{ fontSize: '24px', fontWeight: '900', color: '#0f172a', margin: '0 0 15px 0' }}>{currentText.successHeader}</h3>
-              <p style={{ fontSize: '14.5px', color: '#475569', lineHeight: '1.65', margin: '0 0 35px 0' }}>{currentText.successMessage}</p>
+              <p style={{ fontSize: '14.5px', color: '#475569', lineHeight: '1.65', margin: '0 0 20px 0' }}>{currentText.successMessage}</p>
+              <a
+                href={`https://wa.me/918489555955?text=${encodeURIComponent('Hello FinZolve, I submitted my loan application and need assistance.')}`}
+                target="_self"
+                rel="noreferrer"
+                style={{ display: 'inline-block', marginBottom: '20px', padding: '14px 28px', backgroundColor: '#22c55e', color: '#ffffff', borderRadius: '8px', fontSize: '15px', fontWeight: '700', textDecoration: 'none' }}
+              >
+                {lang === 'ta' ? 'வாட்ஸ்அப்பில் தொடரவும்' : lang === 'hi' ? 'WhatsApp पर जारी रखें' : 'Continue on WhatsApp'}
+              </a>
+              <br />
               <button onClick={resetWholeFormPipeline} style={{ padding: '14px 30px', backgroundColor: '#0f172a', color: '#ffffff', border: 'none', borderRadius: '8px', fontSize: '15px', fontWeight: '700', cursor: 'pointer' }}>{currentText.successCTA}</button>
             </div>
           )}
